@@ -4,7 +4,6 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras.callbacks import EarlyStopping
-
 from assistance_functions import DeepLearning
 
 # Set a maximum memory limit
@@ -55,13 +54,10 @@ model.save("C:/Users/muyu2/OneDrive/Documents/DeepLearning/new/cluster_bbands.h5
 #For the test/validation
 x1_t = np.load(f'C:/Users/muyu2/OneDrive/Documents/DeepLearning/tp_7_sl__6/timesteps.npy', allow_pickle=True)
 y_test = np.load(f'C:/Users/muyu2/OneDrive/Documents/DeepLearning/tp_7_sl__6/label.npy', allow_pickle=True)
-
-# Split to test and validation set( 60/40 split )
-
 tech = np.concatenate(x1_t).flatten()
 x1_test= tech.reshape(len(x1_t), 21,6).astype(np.float32)
 
-# Split to test and validation set( 60/40 split )
+#Evaluate the model
 model.evaluate(x1_test, y_test , verbose=2)
 
 
