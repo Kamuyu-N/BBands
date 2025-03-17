@@ -33,6 +33,7 @@ def create_data():
     log_returns[log_returns.columns] = log_returns[log_returns.columns] *1000
     price = pd.concat([price,log_returns], axis=1)
 
+    #Creation of Technical indicators to be used as features
     price['rsi'] = ta.rsi(price.close, 14)
     price['ema_50'] = ta.ema(price.close, length= 50)
     price['ema_200'] = ta.ema(price.close, length = 200)
@@ -44,6 +45,7 @@ def create_data():
     price['ema_long'] = (price['ema_200'] - price['close']) * 1000
     price.dropna(inplace= True)
 
+    #Feature creation method based on user  imput
     if input("bbands or norm...\n") == 'bbands':
         label, time_step  = DeepLearning.price_gen_V3(price, forward_length=20, timestep_length=40,indicator_columns=['rsi','log_high','log_low','log_close', 'ema_long','ema_short'], repeat=False)
 
@@ -88,6 +90,10 @@ print(len(label))
 
 X_raw = (np.concatenate(time_step)).reshape(len(time_step),21,6)
 print("k meanss has began")
+
+
+
+#create a new py here
 from tslearn.clustering import TimeSeriesKMeans
 dtw_kmeans = TimeSeriesKMeans (n_clusters=30,tol=1e-3, random_state=42, n_jobs=-1, verbose=1,max_iter=200)
 clusters = dtw_kmeans.fit_predict(X_raw)
